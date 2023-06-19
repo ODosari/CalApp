@@ -14,14 +14,14 @@ class CalculatorApp:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Calculator Application")
-        self.root.geometry("670x600+500+200")
+        self.root.geometry("813x500+500+200")
         self.root.resizable(width=True, height=True)
 
         custom_font = tkFont.Font(family="IBM Plex Mono", size=30, weight="bold")
 
         # Create the entry box
-        self.label = tk.Label(self.root, width=35, justify="center", bg='gray', fg='black', font=custom_font)
-        self.label.grid(row=0, column=0, columnspan=4)
+        self.label = tk.Label(self.root, width=44, justify="center", bg='white', fg='black', font=custom_font)
+        self.label.grid(row=0, column=0, columnspan=5)
         # set focus to label so that keyboard events are captured
         self.label.focus_set()
 
@@ -31,22 +31,22 @@ class CalculatorApp:
             ("8", 1, 1),
             ("9", 1, 2),
             ("/", 1, 3),
+            ("√", 1, 4),  # Square root
             ("4", 2, 0),
             ("5", 2, 1),
             ("6", 2, 2),
             ("*", 2, 3),
+            ("ln", 2, 4),  # Natural logarithm
             ("1", 3, 0),
             ("2", 3, 1),
             ("3", 3, 2),
             ("-", 3, 3),
+            ("sin", 3, 4),  # Sine
             ("0", 4, 0),
             (".", 4, 1),
             ("=", 4, 2),
             ("+", 4, 3),
-            ("C", 5, 0),  # Clear button
-            ("√", 5, 1),  # Square root
-            ("ln", 5, 2),  # Natural logarithm
-            ("sin", 5, 3),  # Sine
+            ("C", 4, 4),  # Clear button
         ]
 
         for button in buttons:
@@ -57,7 +57,7 @@ class CalculatorApp:
                 width=7,
                 height=2,
                 font=custom_font,
-                bg='green',
+                bg='white',
                 fg='green',
                 command=lambda t=text: self.on_button_click(t),
             ).grid(row=row, column=col)
@@ -95,7 +95,7 @@ class CalculatorApp:
     def on_button_click(self, text):
         if text == "=":
             try:
-                result = eval(self.label['text'][-1])
+                result = eval(self.label['text'])
                 self.history.append(self.label['text'][-1])
                 self.label.config(text=str(result))
             except ZeroDivisionError:

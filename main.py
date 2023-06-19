@@ -21,7 +21,7 @@ class CalculatorApp:
         custom_font = tkFont.Font(family="IBM Plex Mono", size=30, weight="bold")
 
         # Create the entry box
-        self.label = tk.Label(self.root, width=44, justify="center", bg='white', fg='black', font=custom_font)
+        self.label = tk.Label(self.root, width=44, justify="center", bg='black', fg='white', font=custom_font)
         self.label.grid(row=0, column=0, columnspan=5)
         # set focus to label so that keyboard events are captured
         self.label.focus_set()
@@ -88,7 +88,7 @@ class CalculatorApp:
             bg='black',
             fg='green',
             command=self.show_history,
-        ).grid(row=6, column=2, columnspan=2)
+        ).grid(row=6, column=3, columnspan=2)
 
         # Start the main loop
         self.root.mainloop()
@@ -135,12 +135,7 @@ class CalculatorApp:
     def show_history(self):
         history_text = "\n".join(self.history)  # Combine history entries with newline separator
         messagebox.showinfo("Calculation History", history_text)  # Show the history in a messagebox
-
-        # text = ""
-        # for calc in self.history:
-        #     text += calc + "\n"
-        # self.label.config(text=text)
-
+        self.root.focus_force()  # Set focus back to the main calculator window
 
 if __name__ == "__main__":
     app = CalculatorApp()

@@ -1,10 +1,4 @@
-"""
-Application Name: CalApp
-Version: 0.1
-Created by: Obaid Aldosari
-Github: https://github.com/ODosari
-"""
-
+import math
 import tkinter as tk
 import tkinter.font as tkFont
 
@@ -13,8 +7,8 @@ class CalculatorApp:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Calculator Application")
-        self.root.geometry("655x500+500+200")
-        self.root.resizable(width=False, height=False)
+        self.root.geometry("670x600+500+200")
+        self.root.resizable(width=True, height=True)
 
         custom_font = tkFont.Font(family="IBM Plex Mono", size=30, weight="bold")
 
@@ -43,6 +37,9 @@ class CalculatorApp:
             ("=", 4, 2),
             ("+", 4, 3),
             ("C", 5, 0),  # Clear button
+            ("√", 5, 1),  # Square root
+            ("ln", 5, 2),  # Natural logarithm
+            ("sin", 5, 3),  # Sine
         ]
 
         for button in buttons:
@@ -58,35 +55,80 @@ class CalculatorApp:
                 command=lambda t=text: self.on_button_click(t),
             ).grid(row=row, column=col)
 
+        # Create a history list
+        self.history = []
+
+        # Add a button to clear the history
+        tk.Button(
+            self.root,
+            text="Clear History",
+            width=15,
+            height=2,
+            font=custom_font,
+            bg='black',
+            fg='green',
+            command=self.clear_history,
+        ).grid(row=6, column=0, columnspan=2)
+
+        # Add a button to show the history
+        tk.Button(
+            self.root,
+            text="Show History",
+            width=15,
+            height=2,
+            font=custom_font,
+            bg='black',
+            fg='green',
+            command=self.show_history,
+        ).grid(row=6, column=2, columnspan=2)
+
         # Start the main loop
         self.root.mainloop()
 
     def on_button_click(self, text):
         if text == "=":
             try:
-                result = eval(self.label['text'])
+                result = eval(self.label['text'][-1])
+                self.history.append(self.label['text'][-1])
                 self.label.config(text=str(result))
             except ZeroDivisionError:
                 self.label.config(text="Error: Zero Division")
         elif text == "C":
             self.label.config(text="")
+            self.history = []
+        elif text == "√":
+            try:
+                value = float(self.label['text'])
+                result = math.sqrt(value)
+                self.label.config(text=str(result))
+            except ValueError:
+                self.label.config(text="Error: Invalid Input")
+        elif text == "ln":
+            try:
+                value = float(self.label['text'])
+                result = math.log(value)
+                self.label.config(text=str(result))
+            except ValueError:
+                self.label.config(text="Error: Invalid Input")
+        elif text == "sin":
+            try:
+                value = float(self.label['text'])
+                result = math.sin(value)
+                self.label.config(text=str(result))
+            except ValueError:
+                self.label.config(text="Error: Invalid Input")
         else:
             self.label.config(text=self.label['text'] + text)
 
-        # Bind keypress events to label
-        self.label.bind("<Key>", self.on_keypress)
-        # Bind Enter key to "=" button
-        self.label.bind("<Return>", lambda event: self.on_button_click("="))
+    def clear_history(self):
+        self.history = []
+        self.label.config(text="")
 
-    def on_keypress(self, event):
-        key = event.char
-        if key == "\r":  # Handle Enter key
-            self.on_button_click("=")
-        elif key == "\x08":  # Handle Backspace key
-            self.label.config(text=self.label['text'][:-1])
-            # Allow only digits and math operators
-        elif key.isdigit() or key == "+" or key == "-" or key == "*" or key == "/":
-            self.label.config(text=self.label['text'] + key)
+    def show_history(self):
+        text = ""
+        for calc in self.history:
+            text += calc + "\n"
+        self.label.config(text=text)
 
 
 if __name__ == "__main__":

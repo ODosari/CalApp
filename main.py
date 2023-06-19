@@ -96,7 +96,7 @@ class CalculatorApp:
         if text == "=":
             try:
                 result = eval(self.label['text'])
-                self.history.append(self.label['text'][-1])
+                self.history.append(self.label['text'] + " = " + str(result))
                 self.label.config(text=str(result))
             except ZeroDivisionError:
                 self.label.config(text="Error: Zero Division")

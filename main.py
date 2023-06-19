@@ -137,5 +137,6 @@ class CalculatorApp:
         messagebox.showinfo("Calculation History", history_text)  # Show the history in a messagebox
         self.root.focus_force()  # Set focus back to the main calculator window
 
+
 if __name__ == "__main__":
     app = CalculatorApp()

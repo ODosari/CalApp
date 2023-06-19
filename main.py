@@ -8,6 +8,7 @@ Github: https://github.com/ODosari
 import math
 import tkinter as tk
 import tkinter.font as tkFont
+from tkinter import messagebox
 
 
 class CalculatorApp:
@@ -132,10 +133,13 @@ class CalculatorApp:
         self.label.config(text="")
 
     def show_history(self):
-        text = ""
-        for calc in self.history:
-            text += calc + "\n"
-        self.label.config(text=text)
+        history_text = "\n".join(self.history)  # Combine history entries with newline separator
+        messagebox.showinfo("Calculation History", history_text)  # Show the history in a messagebox
+
+        # text = ""
+        # for calc in self.history:
+        #     text += calc + "\n"
+        # self.label.config(text=text)
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
 Application Name: CalApp
 Version: 0.1
 Created by: Obaid Aldosari
-Github: https://github.com/ODosari
+GitHub: https://github.com/ODosari
 """
 
 import math
@@ -15,15 +15,14 @@ class CalculatorApp:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Calculator Application")
-        self.root.geometry("813x500+500+200")
+        self.root.geometry("975x500+500+200")
         self.root.resizable(width=True, height=True)
 
         custom_font = tkFont.Font(family="IBM Plex Mono", size=30, weight="bold")
 
         # Create the entry box
         self.label = tk.Label(self.root, width=44, justify="center", bg='black', fg='white', font=custom_font)
-        self.label.grid(row=0, column=0, columnspan=5)
-        # set focus to label so that keyboard events are captured
+        self.label.grid(row=0, column=0, columnspan=6)
         self.label.focus_set()
 
         # Create the buttons
@@ -32,24 +31,25 @@ class CalculatorApp:
             ("8", 1, 1),
             ("9", 1, 2),
             ("/", 1, 3),
-            ("√", 1, 4),  # Square root
+            ("√", 1, 4),
+            ("(", 1, 5),  # Left parenthesis
             ("4", 2, 0),
             ("5", 2, 1),
             ("6", 2, 2),
             ("*", 2, 3),
-            ("ln", 2, 4),  # Natural logarithm
+            ("ln", 2, 4),
+            (")", 2, 5),  # Right parenthesis
             ("1", 3, 0),
             ("2", 3, 1),
             ("3", 3, 2),
             ("-", 3, 3),
-            ("sin", 3, 4),  # Sine
+            ("sin", 3, 4),
             ("0", 4, 0),
             (".", 4, 1),
             ("=", 4, 2),
             ("+", 4, 3),
-            ("C", 4, 4),  # Clear button
+            ("C", 4, 4),
         ]
-
         for button in buttons:
             text, row, col = button
             tk.Button(
@@ -63,10 +63,8 @@ class CalculatorApp:
                 command=lambda t=text: self.on_button_click(t),
             ).grid(row=row, column=col)
 
-        # Create a history list
         self.history = []
 
-        # Add a button to clear the history
         tk.Button(
             self.root,
             text="Clear History",
@@ -78,7 +76,6 @@ class CalculatorApp:
             command=self.clear_history,
         ).grid(row=6, column=0, columnspan=2)
 
-        # Add a button to show the history
         tk.Button(
             self.root,
             text="Show History",
@@ -90,7 +87,6 @@ class CalculatorApp:
             command=self.show_history,
         ).grid(row=6, column=3, columnspan=2)
 
-        # Start the main loop
         self.root.mainloop()
 
     def on_button_click(self, text):
@@ -99,8 +95,8 @@ class CalculatorApp:
                 result = eval(self.label['text'])
                 self.history.append(self.label['text'] + " = " + str(result))
                 self.label.config(text=str(result))
-            except ZeroDivisionError:
-                self.label.config(text="Error: Zero Division")
+            except Exception as e:
+                self.label.config(text="Error: " + str(e))
         elif text == "C":
             self.label.config(text="")
             self.history = []
@@ -133,9 +129,9 @@ class CalculatorApp:
         self.label.config(text="")
 
     def show_history(self):
-        history_text = "\n".join(self.history)  # Combine history entries with newline separator
-        messagebox.showinfo("Calculation History", history_text)  # Show the history in a messagebox
-        self.root.focus_force()  # Set focus back to the main calculator window
+        history_text = "\n".join(self.history)
+        messagebox.showinfo("Calculation History", history_text)
+        self.root.focus_force()
 
 
 if __name__ == "__main__":
